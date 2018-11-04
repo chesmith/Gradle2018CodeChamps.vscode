@@ -29,37 +29,7 @@ public class MoveForwardAuto_command extends CommandGroup {
     		addSequential(new ElevatorUpScale_command());
     	}
     		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    	
     }
 
     // Called just before this Command runs the first time

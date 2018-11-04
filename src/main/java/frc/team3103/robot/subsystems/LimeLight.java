@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.team3103.robot.Robot;
+import frc.team3103.robot.commands.AutoAim;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -39,12 +40,16 @@ public class LimeLight extends Subsystem {
 		double steering_adjust = kP * x;
 	}
 	
-	public void lightOn() { table.getEntry("ledMode").setValue(0); }
+	public void lightOn() {
+        Robot.camera.table.getEntry("ledMode").setValue(0);
+	}
 	
-	public void lightOff() { table.getEntry("ledMode").setValue(1); }
+	public void lightOff() {
+        Robot.camera.table.getEntry("ledMode").setValue(1);
+	}
 	
 	public void lightFlash() {
-        table.getEntry("ledMode").setValue(2);
+        Robot.camera.table.getEntry("ledMode").setValue(2);
 	}
 	
     public void initDefaultCommand() {

@@ -3,20 +3,13 @@ package frc.team3103.robot.subsystems;
 import frc.team3103.robot.RobotMap;
 import frc.team3103.robot.commands.arcade_Drive;
 
-import com.ctre.phoenix.motion.MotionProfileStatus;
-import com.ctre.phoenix.motion.SetValueMotionProfile;
-import com.ctre.phoenix.motion.TrajectoryPoint;
-import com.ctre.phoenix.motion.TrajectoryPoint.TrajectoryDuration;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.MotorSafety;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -26,14 +19,13 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 /**
  *
  */
-public class Robot_Drivetrain extends Subsystem{
-	public WPI_TalonSRX flDrive = new WPI_TalonSRX(RobotMap.flMotor);
-	public WPI_TalonSRX frDrive = new WPI_TalonSRX(RobotMap.frMotor);
+public class Robot_Drivetrain extends Subsystem {
+	WPI_TalonSRX flDrive = new WPI_TalonSRX(RobotMap.flMotor);
+	WPI_TalonSRX frDrive = new WPI_TalonSRX(RobotMap.frMotor);
 	WPI_TalonSRX blDrive = new WPI_TalonSRX(RobotMap.blMotor);
 	WPI_TalonSRX brDrive = new WPI_TalonSRX(RobotMap.brMotor);
 	
-	
-	PigeonIMU gyro = new PigeonIMU(blDrive);
+	PigeonIMU gyro = new PigeonIMU(brDrive);
 	
 	
 	DifferentialDrive WCD = new DifferentialDrive(flDrive, frDrive);
@@ -54,12 +46,7 @@ public class Robot_Drivetrain extends Subsystem{
 		//gyro.setFusedHeading(0.0, 5000);
 		flDrive.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		frDrive.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		//RampRate
-        flDrive.configOpenloopRamp(0.5, 10);
-        frDrive.configOpenloopRamp(0.5, 10);
-        blDrive.configOpenloopRamp(0.5, 10);
-        brDrive.configOpenloopRamp(0.5, 10);
-
+		
     	WCD.setSafetyEnabled(false);
 	}
 
@@ -90,16 +77,10 @@ public class Robot_Drivetrain extends Subsystem{
     	frDrive.set(right);
     }
     
-    double rpm = Math.abs(flDrive.getActiveTrajectoryVelocity());
-
-	public void dumbautoforward(){
-		frDrive.set(-0.25);
-		flDrive.set(0.25);
-	}
+    double rpm = FeedbackDevice.CTRE_MagEncoder_Relative.value;
     
-	
-
-	public void forwardAuto(int targetDistance) {
+    
+    public void forwardAuto(int targetDistance) {
     	Timer timer = new Timer();
     	timer.reset();
     	timer.start();
@@ -114,11 +95,7 @@ public class Robot_Drivetrain extends Subsystem{
     		frDrive.set(0);
     	}
     }
-    
-    
-	
-	
-	//start of PID 
+   
     
     double kPgain = 0.04;
     double kDgain = 0;  //was 5 before, might e4xplain erratic movement
@@ -215,6 +192,5 @@ public class Robot_Drivetrain extends Subsystem{
     		frDrive.set(ControlMode.PercentOutput, 0);
     	}    
     }
-    
 }
 

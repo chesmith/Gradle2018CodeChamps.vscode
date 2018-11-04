@@ -18,9 +18,6 @@ public class Elevator_Subsystem extends Subsystem {
 
     WPI_TalonSRX elevatorMotor1 = new WPI_TalonSRX(RobotMap.elevatorMotor1);
     WPI_TalonSRX elevatorMotor2 = new WPI_TalonSRX(RobotMap.elevatorMotor2);
-    //gains
-	double kP = 0.04;
-	double kD = 0;
 
     public void initializeElevator() {
     	//Invert motors
@@ -32,8 +29,6 @@ public class Elevator_Subsystem extends Subsystem {
         elevatorMotor2.follow(elevatorMotor1);
         
 		elevatorMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		elevatorMotor1.configOpenloopRamp(0.2, 10);
-		elevatorMotor2.configOpenloopRamp(0.2, 10);
     }
     
     public void initDefaultCommand() {
@@ -70,7 +65,7 @@ public class Elevator_Subsystem extends Subsystem {
     	double currentTime = timer.get();
     	double currentDistance = rpm * currentTime / 60;
     	if (currentDistance < 9) {
-    		elevatorMotor1.set(0.75);
+    		elevatorMotor1.set(1);
     	}
     	else if (currentDistance >= 9) {
     		elevatorMotor1.set(0);
@@ -90,13 +85,6 @@ public class Elevator_Subsystem extends Subsystem {
     		elevatorMotor1.set(0);
     	}
     }
-
-    public void elevatorTarget(double target){
-    	elevatorMotor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 1);
-    	double currentAngle = elevatorMotor1.getActiveTrajectoryPosition();
-    	//Find me error
-
-	}
     
 }
 

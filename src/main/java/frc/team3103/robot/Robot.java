@@ -14,10 +14,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.team3103.robot.commands.DeliverScaleAuto_command;
-import frc.team3103.robot.commands.DeliverSwitchAuto_command;
-import frc.team3103.robot.commands.MoveForwardAuto_command;
-import frc.team3103.robot.commands.dumbMoveForwardAuto_command;
 import frc.team3103.robot.subsystems.Box_Catcher;
 import frc.team3103.robot.subsystems.Elevator_Subsystem;
 import frc.team3103.robot.subsystems.LimeLight;
@@ -41,11 +37,9 @@ public class Robot extends TimedRobot {
 	public static final LimeLight camera = new LimeLight();
 	public static final Box_Catcher gripper = new Box_Catcher();
 	public static final Winch winch = new Winch();
-
-	String gameData;
+	
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
-	SendableChooser<Integer> pos_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -57,23 +51,10 @@ public class Robot extends TimedRobot {
 		mainDrive.InitializeDrive();
 		elevator.initializeElevator();
 		gripper.Box_CatcherInit();
-		//put in all my choosers
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		pos_chooser = new SendableChooser<>();
-		pos_chooser.addDefault("Postion null", 0);
-		pos_chooser.addObject("Position 1", 1);
-		pos_chooser.addObject("Position 2", 2);
-		pos_chooser.addObject("Position 3", 3);
-		m_chooser = new SendableChooser<>();
-		m_chooser.addDefault("Dumb_Auto", new dumbMoveForwardAuto_command());
-		m_chooser.addObject("Drive Forward", new MoveForwardAuto_command(pos_chooser.getSelected()));
-		m_chooser.addObject("Switch Auto", new DeliverSwitchAuto_command(pos_chooser.getSelected(), gameData));
-		m_chooser.addObject("Scale Auto", new DeliverScaleAuto_command(pos_chooser.getSelected(), gameData));
 	
 		//m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
-		SmartDashboard.putData("Position", pos_chooser);
 	}
 
 	/**
@@ -105,7 +86,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
-		mainDrive.InitializeDrive();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -137,7 +117,6 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
-
 	}
 
 	/**

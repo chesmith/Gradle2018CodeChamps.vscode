@@ -16,13 +16,13 @@ public class Box_Catcher extends Subsystem {
 	WPI_TalonSRX catcher1 = new WPI_TalonSRX(RobotMap.boxCatcherRoller1);
 	WPI_TalonSRX catcher2 = new WPI_TalonSRX(RobotMap.boxCatcherRoller2);
 	
-	Solenoid piston = new Solenoid(21, 1);
+	Solenoid piston = new Solenoid(21, 0);
 	
 	public void Box_CatcherInit() {
 		//inversion
 		//mover.setInverted(false);
 		catcher1.setInverted(false);
-		catcher2.setInverted(true);
+		catcher2.setInverted(false);
 		//follow
 		catcher2.follow(catcher1);
 	

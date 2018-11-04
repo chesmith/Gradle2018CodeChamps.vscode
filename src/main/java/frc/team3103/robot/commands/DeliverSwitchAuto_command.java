@@ -58,7 +58,7 @@ public class DeliverSwitchAuto_command extends CommandGroup {
     				
         		//deliver box to the right side of switch from the middle position
     			case 2:
-    				addSequential(new turnAngle_command(360-30.96)); //Remember this is a 360 degree gyro !
+    				addSequential(new turnAngle_command(-30.96));
     				addSequential(new MoveForward_command(130));
     				addSequential(new ElevatorUpSwitch_command());
     				addSequential(new deliverBox_command());
